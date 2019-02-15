@@ -1,7 +1,9 @@
-import * as firebase from "firebase";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import { FirebaseConfig } from "../config/dev.js";
 
-import { FirebaseConfig } from "../config/keys";
 firebase.initializeApp(FirebaseConfig);
+firebase.firestore().settings({ timestampsInSnapshots: true });
 
-const databaseRef = firebase.database().ref();
-export const todosRef = databaseRef.child("todos");
+export default firebase;
