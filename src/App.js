@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SideNavBar from "./components/SideNavBar/SideNavBar";
+import SideNavBar from "./components/navbar/SideNavBar";
 
 class App extends Component {
   render() {
