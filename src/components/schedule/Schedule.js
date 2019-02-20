@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import BigCalendar from 'react-big-calendar'
-import moment from 'moment'
+import React, { Component, alert } from 'react';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
+import EventModal from '../schedule/EventModal';
 const events = [
     {
         id: 0,
@@ -26,18 +26,61 @@ const events = [
       },
 ]
 
+
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 export default class schedule extends Component {
+    constructor(...args) {
+      super(...args)
+  
+      this.state = { events,
+                     show: false
+                    }
+    }
+
+    toggleModal = e => {
+      this.setState({
+        show: !this.state.show
+      });
+    };
+
+  
+  handleSelect = ({ start, end }) => {
+    const title = window.prompt('New Event name')
+    if(title)
+      this.setState({
+        events: [
+          ...this.state.events,
+          {
+            start,
+            end,
+            title,
+          },
+        ],
+      })
+    }
+  
+
   render() {
     return (
+      <div style={{height:500}}>
         <BigCalendar
-            events={events}
+            selectable
+            events={this.state.events}
             localizer={localizer}
+            onSelectEvent={event => alert(event.title)}
+            onSelectSlot={this.handleSelect}
         />
+        <button  onClick={e => {
+              this.toggleModal(e);
+         }}
+          > show Modal 
+        </button>
+        <EventModal show={this.state.show}  onClose={this.toggleModal}>
+        </EventModal>
+        </div>
     )
   }
 }
-
