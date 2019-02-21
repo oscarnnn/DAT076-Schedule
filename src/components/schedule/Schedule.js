@@ -3,6 +3,9 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import EventModal from './EventModal';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -13,28 +16,37 @@ class Schedule extends Component {
       super(...args)
   
       this.state = {
-                     show: false
+                     show: false,
+                     startDate: new Date(),
+                     endDate: new Date()
                     }
     }
 
-    toggleModal = e => {
+    toggleModal = (e) => {
       this.setState({
         show: !this.state.show
       });
     };
 
-  
-  handleSelect = ({ start, end }) => {
-    const title = window.prompt('New Event name')
-    if(title)
-      this.props.addEvent({
-            start,
-            end,
-            title,
+    updateStartDate = (date) => {
+      this.setState({
+        startDate: date
       })
     }
 
+    updateEndDate = (date) => {
+      this.setState({
+        endDate: date
+      })
+    }
 
+    handleSelect = ({ start, end }) => {
+    this.setState({
+      startDate:start,
+      endDate: end
+    })
+    this.toggleModal();
+    }
 
   render() {
     return (
@@ -43,9 +55,16 @@ class Schedule extends Component {
             selectable
             events={this.props.events}
             localizer={localizer}
-            onSelectEvent={event => alert(event.title)}
             onSelectSlot={this.handleSelect}
         />
+        <EventModal 
+          show={this.state.show} 
+          start={this.state.startDate} 
+          end={this.state.endDate} 
+          close={this.toggleModal}
+          updateStart={this.updateStartDate}
+          updateEnd={this.updateEndDate}
+          />
         </div>
     )
   }
@@ -53,14 +72,8 @@ class Schedule extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    events: state.events
+    events: state.event.events
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addEvent: (event) => { dispatch({type: 'ADD_EVENT', event: event})}
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Schedule)
+export default connect(mapStateToProps)(Schedule)
