@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { SideNav, Nav } from "react-sidenav";
-import styled from "styled-components";
+import { Link } from 'react-router-dom'
+import SignedIn from "../layout/SignedIn";
+import SignedOut from "../layout/SignedOut";
 
 // This component was made from a guide: https://www.npmjs.com/package/react-sidenav
+
+//Alternative: https://github.com/negomi/react-burger-menu
 
 // Component Styling, imported from Containers.js
 import {
@@ -12,25 +15,29 @@ import {
   Theme as ContainerTheme
 } from "./Containers";
 
-export default class SideNavBar extends Component {
-  state = {
-    selectedPath: ''
-  }
-
-  onItemSelection = (arg) => {
-    this.setState({selectedPath:arg.path})
-  }
-
+class SideNavBar extends Component {
   render() {
+    const { auth, profile } = this.props;
+    const links = auth.uid ? <SignedIn profile={profile} /> : <SignedOut />;
     return (
-      <BaseAppContainer>
-      <Navigation>
-      <SideNav selectedPath={this.state.selectedPath} onItemSelection={this.onItemSelection} theme={ContainerTheme}>
-        <Nav id={'1'}>1</Nav>
-        <Nav id={'2'}>2</Nav>
-      </SideNav>
-      </ Navigation>
-      </ BaseAppContainer>
-    )
+      <nav className="nav-wrapper grey darken-3">
+        <div className="container">
+          <Link to="/" className="brand-logo">
+            Scheduler
+          </Link>
+          {links}
+        </div>
+      </nav>
+    );
   }
 }
+
+const mapStateToProps = state => {
+  //console.log(state);
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
+};
+
+export default connect(mapStateToProps)(SideNavBar);

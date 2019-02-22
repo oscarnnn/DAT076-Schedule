@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 const events = [
     {
@@ -30,8 +32,10 @@ const events = [
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
-export default class schedule extends Component {
+class Schedule extends Component {
   render() {
+    const { auth } = this.props;
+    if (!auth.uid) return <Redirect to='/signin' />
     return (
         <BigCalendar
             events={events}
@@ -41,3 +45,11 @@ export default class schedule extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  // console.log(state);
+  return {
+    auth: state.firebase.auth,
+  }
+}
+
+export default connect(mapStateToProps)(Schedule)
