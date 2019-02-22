@@ -6,7 +6,9 @@ import SignedOut from "../layout/SignedOut";
 import Logo from "../../assets/Logo.svg";
 
 const logoStyle = {
-  margin: "1em"
+  width:"60%",
+  paddingLeft: "2em",
+  paddingTop: "1em",
 };
 
 class SideNavBar extends Component {
@@ -18,14 +20,10 @@ class SideNavBar extends Component {
         id="slide-out"
         className="sidenav sidenav-fixed light-blue lighten-5"
       >
-        <div style={logoStyle}>
-          <Link to="/" className="brand-logo">
-            <img src={Logo} />
-          </Link>
-        </div>
-        <ul>
-          <li> {links}</li>
-        </ul>
+        <Link to="/">
+            <img src={Logo} width="60%" style={logoStyle} alt="logo"/>
+        </Link>
+        {links}
       </div>
     );
   }
