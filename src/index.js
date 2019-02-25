@@ -13,7 +13,6 @@ import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import firebase from 'firebase/app'
 
-
 const enhancers = [
   reduxFirestore(firebase),
   reactReduxFirebase(firebase, {
