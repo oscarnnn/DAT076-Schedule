@@ -1,11 +1,11 @@
 import React, { Component, alert } from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { connect } from 'react-redux';
 import EventModal from './EventModal';
+import { Redirect } from 'react-router-dom'
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './modal.css';
-
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -49,11 +49,14 @@ class Schedule extends Component {
     }
 
   render() {
+    const { auth } = this.props;
+    if (!auth.uid) return <Redirect to='/signin' />
     return (
       <div>
       <div style={{zIndex:900, position:"fixed", height: "100%", width: "100%"}}>
       <BigCalendar
             selectable
+            showMultiDayTimes
             events={this.props.events}
             localizer={localizer}
             onSelectSlot={this.handleSelect}
@@ -75,8 +78,10 @@ class Schedule extends Component {
 }
 
 const mapStateToProps = (state) => {
+  // console.log(state);
   return {
-    events: state.event.events
+    events: state.event.events,
+    auth: state.firebase.auth,
   }
 }
 

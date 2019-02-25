@@ -1,5 +1,5 @@
 {
-  "name": "DAT076-Schedule",
+  "name": "dat076-schedule",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,9 +14,12 @@
     "react-redux-firebase": "^2.2.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
+    "react-sidenav": "^3.1.7",
     "redux": "^4.0.1",
     "redux-firestore": "^0.7.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.1.3",
+    "typescript": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
