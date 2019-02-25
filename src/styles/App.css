@@ -1,0 +1,15 @@
+html, body, #fullheight {
+  min-height: 100% !important;
+  height: 100%;
+}
+
+main {
+  padding-left: 300px;
+  min-height: 40em;
+}
+
+@media only screen and (max-width: 992px) {
+  main {
+    padding-left: 0;
+  }
+}

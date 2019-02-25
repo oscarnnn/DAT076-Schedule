@@ -1,33 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import SignedIn from "../layout/SignedIn";
 import SignedOut from "../layout/SignedOut";
+import Logo from "../../assets/Logo.svg";
 
-// This component was made from a guide: https://www.npmjs.com/package/react-sidenav
-
-//Alternative: https://github.com/negomi/react-burger-menu
-
-// Component Styling, imported from Containers.js
-import {
-  AppContainer as BaseAppContainer,
-  ExampleNavigation as Navigation,
-  Theme as ContainerTheme
-} from "./Containers";
+const logoStyle = {
+  width:"60%",
+  paddingLeft: "2em",
+  paddingTop: "1em",
+};
 
 class SideNavBar extends Component {
   render() {
     const { auth, profile } = this.props;
     const links = auth.uid ? <SignedIn profile={profile} /> : <SignedOut />;
     return (
-      <nav className="nav-wrapper grey darken-3">
-        <div className="container">
-          <Link to="/" className="brand-logo">
-            Scheduler
-          </Link>
-          {links}
-        </div>
-      </nav>
+      <div
+        id="slide-out"
+        className="sidenav sidenav-fixed light-blue lighten-5"
+      >
+        <Link to="/">
+            <img src={Logo} width="60%" style={logoStyle} alt="logo"/>
+        </Link>
+        {links}
+      </div>
     );
   }
 }
