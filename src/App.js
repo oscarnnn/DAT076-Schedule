@@ -12,7 +12,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <SideNavBar/>
-          <main style={{height: window.innerHeight}}>
+          <main style={{height: "100vh"}}>
             <Switch>
               <Route exact path="/" component={Schedule} />
               <Route path="/signin" component={SignIn} />
