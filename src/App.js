@@ -10,9 +10,9 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="App">
-          <SideNavBar />
-          <main>
+        <div>
+          <SideNavBar/>
+          <main style={{height: window.innerHeight}}>
             <Switch>
               <Route exact path="/" component={Schedule} />
               <Route path="/signin" component={SignIn} />
