@@ -3,9 +3,9 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
 import EventModal from './EventModal';
+import './modal.css';
+
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -50,13 +50,16 @@ class Schedule extends Component {
 
   render() {
     return (
-      <div style={{height:500}}>
-        <BigCalendar
+      <div>
+      <div style={{zIndex:900, position:"fixed", height: "100%", width: "100%"}}>
+      <BigCalendar
             selectable
             events={this.props.events}
             localizer={localizer}
             onSelectSlot={this.handleSelect}
         />
+      </div>
+      <div>
         <EventModal 
           show={this.state.show} 
           start={this.state.startDate} 
@@ -65,8 +68,9 @@ class Schedule extends Component {
           updateStart={this.updateStartDate}
           updateEnd={this.updateEndDate}
           />
-        </div>
-    )
+      </div>
+    </div>
+    );
   }
 }
 
