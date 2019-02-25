@@ -4,6 +4,7 @@ import SideNavBar from "./components/navbar/SideNavBar";
 import Schedule from "./components/schedule/Schedule";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
+import Members from "./components/members/Members";
 import "./styles/App.css"
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
               <Route exact path="/" component={Schedule} />
               <Route path="/signin" component={SignIn} />
               <Route path="/signup" component={SignUp} />
+              <Route path="/members" component={Members} />
             </Switch>
           </main>
         </div>

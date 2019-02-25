@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authActions";
+import { NavLink } from "react-router-dom";
 
 const SignedInLinks = props => {
   return (
@@ -8,6 +9,12 @@ const SignedInLinks = props => {
       <ul>
         <li>
           <a onClick={props.signOut}>Log Out</a>
+        </li>
+        <li>
+          <NavLink to='/'>Schedule</NavLink>
+        </li>
+        <li>
+          <NavLink to='/members'>Members</NavLink>
         </li>
       </ul>
     </div>
