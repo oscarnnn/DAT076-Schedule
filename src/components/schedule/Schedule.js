@@ -7,7 +7,11 @@ import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import DatePicker from "react-datepicker";
-import { addEvent, deleteEvent } from "../../store/actions/eventActions";
+import {
+  addEvent,
+  deleteEvent,
+  updateEvent
+} from "../../store/actions/eventActions";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
@@ -42,12 +46,20 @@ class Schedule extends Component {
 
   // Handling closing and opening of modal
   toggleAddModal = e => {
+    if (this.state.addShow)
+      this.setState({
+        title: ""
+      });
     this.setState({
       addShow: !this.state.addShow
     });
   };
 
   toggleEditModal = e => {
+    if (this.state.editShow)
+      this.setState({
+        title: ""
+      });
     this.setState({
       editShow: !this.state.editShow
     });
@@ -96,7 +108,10 @@ class Schedule extends Component {
 
   handleSelectEvent = event => {
     this.setState({
-      eventid: event.id
+      eventid: event.id,
+      startDate: event.start,
+      endDate: event.end,
+      title: event.title
     });
     this.toggleEditModal();
   };
@@ -109,9 +124,6 @@ class Schedule extends Component {
       end,
       title
     });
-    this.setState({
-      title: ""
-    });
     this.toggleAddModal();
   };
 
@@ -119,6 +131,21 @@ class Schedule extends Component {
   // connected with an id from both db and redux store and close modal
   handleDelete = eventid => {
     this.props.deleteEvent(eventid);
+    this.toggleEditModal();
+  };
+
+  // When editbutton is clicked in the modal this function will fire and update the event
+  // connected to the current eventid on db and redux store, then close modal
+  handleEdit = (start, end, title) => {
+    const id = this.state.eventid;
+    this.props.updateEvent(
+      {
+        start,
+        end,
+        title
+      },
+      id
+    );
     this.toggleEditModal();
   };
 
@@ -189,9 +216,49 @@ class Schedule extends Component {
           </Modal>
           <Modal show={this.state.editShow} close={this.toggleEditModal}>
             <h5>Edit Event</h5>
+            <br />
+            <label>Title</label>
+            <input
+              style={{ width: "50%" }}
+              type="text"
+              value={this.state.title}
+              onChange={this.handleTitle}
+            />
+            <br />
+            <label>Start time</label>
+            <DatePicker
+              selected={this.state.startDate}
+              onChange={this.updateStartDate}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy HH:mm"
+              timeCaption="time"
+              style={{ width: "50%" }}
+            />
+            <br />
+            <label>End time</label>
+            <DatePicker
+              selected={this.state.endDate}
+              onChange={this.updateEndDate}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy HH:mm"
+              timeCaption="time"
+              style={{ width: "50%" }}
+            />
+            <br />
             <button
               className="btn pink lighten-1 z-depth-0"
               style={{ marginBottom: "10px" }}
+              onClick={() =>
+                this.handleEdit(
+                  this.state.startDate,
+                  this.state.endDate,
+                  this.state.title
+                )
+              }
             >
               Edit
             </button>
@@ -212,7 +279,8 @@ class Schedule extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     addEvent: event => dispatch(addEvent(event)),
-    deleteEvent: eventid => dispatch(deleteEvent(eventid))
+    deleteEvent: eventid => dispatch(deleteEvent(eventid)),
+    updateEvent: (event, eventid) => dispatch(updateEvent(event, eventid))
   };
 };
 

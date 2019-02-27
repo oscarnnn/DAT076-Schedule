@@ -3,9 +3,8 @@ const initState = {}
 const eventReducer = (state = initState, action) => {
     switch(action.type){
       case 'ADD_EVENT':
-      return {
-            events: [...state.events, action.event]
-        }
+      return state;
+
       case 'ADD_EVENT_ERROR':
         console.log('add event error: ', action.err);
         return state;
@@ -16,6 +15,14 @@ const eventReducer = (state = initState, action) => {
 
       case 'DEL_EVENT_ERROR':
         console.log('delete event error: ', action.err);
+        return state;
+
+      case 'UPDATE_EVENT':
+        console.log("event updated")
+        return state;
+
+      case 'DEL_EVENT_ERROR':
+        console.log('update event error: ', action.err);
         return state;
 
       default:
