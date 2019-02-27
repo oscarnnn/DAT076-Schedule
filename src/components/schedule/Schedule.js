@@ -28,8 +28,7 @@ class Schedule extends Component {
       show: false,
       startDate: new Date(),
       endDate: new Date(),
-      title: "",
-      tmp: []
+      title: ""
     };
   }
 
@@ -92,7 +91,6 @@ class Schedule extends Component {
         tmpList[i].end = new Date(tmpList[i].end.seconds * 1000);
       }
     }
-    this.setState({ tmp: tmpList });
   };
 
   // Update the title for the event
@@ -111,7 +109,7 @@ class Schedule extends Component {
           <BigCalendar
             selectable
             showMultiDayTimes
-            events={this.state.tmp}
+            events={this.props.events}
             localizer={localizer}
             onSelectSlot={this.handleSelect}
           />

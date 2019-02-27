@@ -11,26 +11,6 @@ import registerServiceWorker from "./registerServiceWorker";
 import fbConfig from "./config/firebase"
 import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
-import firebase from 'firebase/app'
-
-const enhancers = [
-  reduxFirestore(firebase),
-  reactReduxFirebase(firebase, {
-    userProfile: 'users',
-    useFirestoreForProfile: true,
-  }),
-]
-const reduxDevToolsExtension = window.devToolsExtension
-if (
-  process.env.NODE_ENV === "development" &&
-  typeof reduxDevToolsExtension === "function"
-) {
-  enhancers.push(reduxDevToolsExtension())
-}
-
-const composedEnhancers = compose(
-  ...enhancers
-)
 
 const store = createStore(reducers,
   compose(
