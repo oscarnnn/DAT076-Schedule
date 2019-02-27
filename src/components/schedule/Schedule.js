@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import DatePicker from "react-datepicker";
-import { addEvent } from "../../actions/eventActions";
+import { addEvent } from "../../store/actions/eventActions";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
