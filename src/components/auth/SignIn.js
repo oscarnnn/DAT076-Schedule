@@ -27,12 +27,12 @@ class SignIn extends Component {
           <div className="input-field">
             <i class="material-icons prefix">email</i>
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} />
+            <input type="email" id="email" onChange={this.handleChange} required/>
           </div>
           <div className="input-field">
             <i className="material-icons prefix">lock</i>
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} />
+            <input type="password" id="password" onChange={this.handleChange} required/>
           </div>
           <div className="input-field">
             <button className="btn pink lighten-1 z-depth-0">Login</button>
