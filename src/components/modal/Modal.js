@@ -4,9 +4,6 @@ import "../../styles/modal.css";
 // This component will render a modal with a close button and submit button.
 // The component will render the children passed by its props
 export default class EventModal extends Component {
-  constructor(...args) {
-    super(...args);
-  }
 
   render() {
     if (!this.props.show) {

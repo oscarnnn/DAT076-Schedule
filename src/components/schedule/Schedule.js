@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import DatePicker from "react-datepicker";
-import { addEvent, deleteEvent } from "../../actions/eventActions";
+import { addEvent, deleteEvent } from "../../store/actions/eventActions";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
@@ -30,8 +30,7 @@ class Schedule extends Component {
       eventid: "",
       startDate: new Date(),
       endDate: new Date(),
-      title: "",
-      tmp: []
+      title: ""
     };
   }
 
@@ -86,7 +85,6 @@ class Schedule extends Component {
         tmpList[i].end = new Date(tmpList[i].end.seconds * 1000);
       }
     }
-    this.setState({ tmp: tmpList });
   };
 
   // Update the title for the event
@@ -133,7 +131,7 @@ class Schedule extends Component {
           <BigCalendar
             selectable
             showMultiDayTimes
-            events={this.state.tmp}
+            events={this.props.events}
             localizer={localizer}
             onSelectSlot={this.handleSelect}
             onSelectEvent={event => this.handleSelectEvent(event)}
