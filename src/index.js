@@ -28,10 +28,6 @@ if (
   enhancers.push(reduxDevToolsExtension())
 }
 
-const composedEnhancers = compose(
-  ...enhancers
-)
-
 const store = createStore(reducers,
   compose(
     applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
