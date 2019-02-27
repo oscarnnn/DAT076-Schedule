@@ -7,13 +7,13 @@ import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import DatePicker from "react-datepicker";
-import { addEvent } from "../../actions/eventActions";
+import { addEvent, deleteEvent } from "../../actions/eventActions";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
 import "../../styles/schedule.css";
 
-//This component will render and handle the schedule. It will get events from the
+// This component will render and handle the schedule. It will get events from the
 // firestore database and also add events to the database while also saving the events in
 // redux store.
 
@@ -25,7 +25,9 @@ class Schedule extends Component {
   constructor(...args) {
     super(...args);
     this.state = {
-      show: false,
+      addShow: false,
+      editShow: false,
+      eventid: "",
       startDate: new Date(),
       endDate: new Date(),
       title: "",
@@ -40,9 +42,15 @@ class Schedule extends Component {
   }
 
   // Handling closing and opening of modal
-  toggleModal = e => {
+  toggleAddModal = e => {
     this.setState({
-      show: !this.state.show
+      addShow: !this.state.addShow
+    });
+  };
+
+  toggleEditModal = e => {
+    this.setState({
+      editShow: !this.state.editShow
     });
   };
 
@@ -66,21 +74,7 @@ class Schedule extends Component {
       startDate: start,
       endDate: end
     });
-    this.toggleModal();
-  };
-
-  // When submitbutton is clicked in the modal this function will fire and update db and redux store
-  // with an event(start time, end time and title)
-  handleSubmit = (start, end, title) => {
-    this.props.addEvent({
-      start,
-      end,
-      title
-    });
-    this.setState({
-      title: ""
-    });
-    this.toggleModal();
+    this.toggleAddModal();
   };
 
   // Formats timestamps from the firebase server to valid dates
@@ -102,6 +96,34 @@ class Schedule extends Component {
     });
   };
 
+  handleSelectEvent = event => {
+    this.setState({
+      eventid: event.id
+    });
+    this.toggleEditModal();
+  };
+
+  // When submitbutton is clicked in the modal this function will fire and update db and redux store
+  // with an event(start time, end time and title) and close modal
+  handleSubmit = (start, end, title) => {
+    this.props.addEvent({
+      start,
+      end,
+      title
+    });
+    this.setState({
+      title: ""
+    });
+    this.toggleAddModal();
+  };
+
+  // When deletebutton is clicked in the modal this function will fire and delete the event
+  // connected with an id from both db and redux store and close modal
+  handleDelete = eventid => {
+    this.props.deleteEvent(eventid);
+    this.toggleEditModal();
+  };
+
   render() {
     const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
@@ -114,20 +136,11 @@ class Schedule extends Component {
             events={this.state.tmp}
             localizer={localizer}
             onSelectSlot={this.handleSelect}
+            onSelectEvent={event => this.handleSelectEvent(event)}
           />
         </div>
         <div>
-          <Modal
-            show={this.state.show}
-            close={this.toggleModal}
-            submit={() =>
-              this.handleSubmit(
-                this.state.startDate,
-                this.state.endDate,
-                this.state.title
-              )
-            }
-          >
+          <Modal show={this.state.addShow} close={this.toggleAddModal}>
             <h5>Add Event</h5>
             <br />
             <label>Title</label>
@@ -162,6 +175,35 @@ class Schedule extends Component {
               style={{ width: "50%" }}
             />
             <br />
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              style={{ marginBottom: "10px" }}
+              onClick={() =>
+                this.handleSubmit(
+                  this.state.startDate,
+                  this.state.endDate,
+                  this.state.title
+                )
+              }
+            >
+              Submit
+            </button>
+          </Modal>
+          <Modal show={this.state.editShow} close={this.toggleEditModal}>
+            <h5>Edit Event</h5>
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              style={{ marginBottom: "10px" }}
+            >
+              Edit
+            </button>
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              style={{ marginBottom: "10px" }}
+              onClick={() => this.handleDelete(this.state.eventid)}
+            >
+              Delete
+            </button>
           </Modal>
         </div>
       </div>
@@ -171,7 +213,8 @@ class Schedule extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addEvent: event => dispatch(addEvent(event))
+    addEvent: event => dispatch(addEvent(event)),
+    deleteEvent: eventid => dispatch(deleteEvent(eventid))
   };
 };
 
