@@ -17,13 +17,6 @@ export default class EventModal extends Component {
             ×
           </span>
           {this.props.children}
-          <button
-            className="btn pink lighten-1 z-depth-0"
-            style={{ marginBottom: "10px" }}
-            onClick={this.props.submit}
-          >
-            Submit
-          </button>
         </div>
       </div>
     );

@@ -12,3 +12,14 @@ export const addEvent = (event) => {
         })
     }
 }
+
+export const deleteEvent = (eventid) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firestore = getFirestore();
+        firestore.collection('events').doc(eventid).delete().then(() => {
+            dispatch({type: 'DEL_EVENT', eventid})
+        }).catch((err) => {
+            dispatch({type: 'DEL_EVENT_ERROR', err})
+        })
+    }
+}
