@@ -285,6 +285,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
+  console.log(state)
   if (state.firestore.ordered.events) {
     return {
       events: state.firestore.ordered.events,
