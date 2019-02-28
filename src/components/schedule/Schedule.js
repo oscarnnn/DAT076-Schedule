@@ -285,10 +285,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  if (state.firestore.ordered.events) {
+  if (state.firestore.ordered.organization) {
+    console.log(state)
     return {
-      events: state.firestore.ordered.events,
-      auth: state.firebase.auth
+      events: [],
+      auth: state.firebase.auth,
+      org: state.firebase.profile.organization
     };
   } else {
     return {
@@ -303,5 +305,9 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([{ collection: "events" }])
+  firestoreConnect([
+    {
+      collection: 'organization',
+    }
+  ])
 )(Schedule);
