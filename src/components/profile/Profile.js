@@ -13,14 +13,15 @@ class Profile extends Component {
       firstName: "",
       lastName: "",
       phone: "",
-      userid: ""
+      userid: this.props.auth.uid
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.input = React.createRef();
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
+      console.log("userID: " + this.state.userid)
   }
 
   handleChange = e => {
