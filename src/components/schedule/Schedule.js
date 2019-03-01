@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
 import "../../styles/schedule.css";
+import Participate from "./Participate"
 
 // This component will render and handle the schedule. It will get events from the
 // firestore database and also add events to the database while also saving the events in
@@ -249,6 +250,8 @@ class Schedule extends Component {
               style={{ width: "50%" }}
             />
             <br />
+            <Participate/>
+            <br />
             <button
               className="btn pink lighten-1 z-depth-0"
               style={{ marginBottom: "10px" }}
@@ -285,7 +288,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  console.log(state)
+  //console.log(state)
   if (state.firestore.ordered.events) {
     return {
       events: state.firestore.ordered.events,
