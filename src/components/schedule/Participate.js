@@ -8,14 +8,25 @@ class Participate extends Component {
     super();
 
     this.state = {
-      children: []
+      children: [],
+      eventid: ""
     };
   }
 
-  appendChild = () => {
-    
+  componentWillMount() {
     this.setState({
-      children: [...this.state.children, <div key={this.props.auth.uid} className="chip"></div>]
+      eventid: this.props.eventid
+    });
+  }
+
+  appendChild = () => {
+    this.setState({
+      children: [
+        ...this.state.children,
+        <div key={this.props.uid} className="chip">
+          {this.props.profile.firstName + " " + this.props.profile.lastName}
+        </div>
+      ]
     });
   };
 
@@ -24,29 +35,19 @@ class Participate extends Component {
       <div>
         {this.state.children}
         <br />
-        <button
-          className="btn pink lighten-1 z-depth-0"
-          style={{ marginBottom: "10px" }}
-          onClick={() => {
-            this.appendChild();
-          }}
-        >
-          Participate
-        </button>
+        <div className="center-align">
+          <button
+            className="btn pink lighten-1 z-depth-0"
+            onClick={() => {
+              this.appendChild();
+            }}
+          >
+            Participate
+          </button>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-    console.log(state);
-    return {
-      users: state.firestore.ordered.users,
-      auth: state.firebase.auth
-    };
-  };
-
-  export default compose(
-    connect(mapStateToProps),
-    firestoreConnect([{ collection: "users" }])
-  )(Participate);
+export default Participate;
