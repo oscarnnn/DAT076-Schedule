@@ -13,88 +13,59 @@ class Profile extends Component {
       firstName: "",
       lastName: "",
       phone: "",
-      userid: this.props.auth.uid
+      userid: this.props.auth.uid,
+      redirect : false
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.input = React.createRef();
   }
-
-  componentDidMount() {
-      console.log("userID: " + this.state.userid)
+  componentDidUpdate(prevProps) {
+    if (this.props.phone !== prevProps.phone) {
+      console.log("New Phone: " + this.props.phone);
+      console.log("Old Phone: " + prevProps.phone);
+    }
   }
 
+  // When input text is changed in profile then this function will fire and update the state
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
-    console.log("id: " + [e.target.id]);
-    console.log(["value: " + e.target.value]);
-    console.log(e.target);
   };
-  /*handlefirstName = firstName => {
-      console.log("name: " + firstName.target.value)
-    this.setState({
-      firstName: firstName.target.value
-    });
-  };*/
-
-  handleSubmit = (firstName, lastName, phone) => {
-    const userid = this.props.auth.uid;
+  // When Update Profile button is clicked then this function will fire and update the event
+  // connected to the current userid on db and redux store.
+  handleSubmit = (phone) => {
+    const userid = this.state.userid;
+    this.setState({redirect: true});
     this.props.updateUser(
       {
-        firstName,
-        lastName,
         phone
       },
       userid
     );
   };
 
+  
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/'/>;
+    }
     const { authError, auth } = this.props;
     if (!auth.uid) return <Redirect to="/" />;
     return (
       <div className="container col s12">
-        <form className="white">
+  
           <h5 className="grey-text text-darken-3">Profile information</h5>
-          <div className="input-field">
-            <i className="material-icons prefix">email</i>
-            <input
-              value={this.props.profile.email}
-              disabled="disabled"
-              type="email"
-              id="email"
-              required
-            />
-            <label className="active" for="email">
-              Email
-            </label>
-          </div>
-          <div className="input-field">
-            <i className="material-icons prefix">lock</i>
-            <input
-              value="********"
-              disabled="disabled"
-              type="password"
-              id="password"
-              required
-            />
-            <label className="active" for="password">
-              Password
-            </label>
-          </div>
           <div className="row">
             <div className="input-field col s6">
               <i className="material-icons prefix">person</i>
               <input
-                defaultValue={this.props.profile.firstName}
+                value={this.props.profile.firstName}
                 type="text"
                 id="firstName"
-                className="validate"
-                onChange={this.handleChange}
+                disabled="disabled"
               />
-              <label className="active" for="firstName">
+              <label className="active" htmlFor="firstName">
                 First Name
               </label>
             </div>
@@ -103,11 +74,9 @@ class Profile extends Component {
                 defaultValue={this.props.profile.lastName}
                 type="text"
                 id="lastName"
-                className="validate"
-                onChange={this.handleChange}
-                required
+                disabled="disabled"
               />
-              <label className="active" for="lastName">
+              <label className="active" htmlFor="lastName">
                 Last Name
               </label>
             </div>
@@ -121,21 +90,54 @@ class Profile extends Component {
               className="validate"
               onChange={this.handleChange}
             />
-            <label className="active" for="phone">
+            <label className="active" htmlFor="phone">
               Phone
             </label>
           </div>
           <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0"              onClick={() =>
+            <i className="material-icons prefix">school</i>
+            <input
+              defaultValue={this.props.profile.organization}
+              id="organization"
+              type="text"
+              disabled="disabled"
+            />
+            <label className="active" htmlFor="phone">
+              Organization
+            </label>
+          </div>
+          <div className="input-field">
+            <i className="material-icons prefix">email</i>
+            <input
+              value={this.props.profile.email}
+              disabled="disabled"
+              type="email"
+              id="email"
+              required
+            />
+            <label className="active" htmlFor="email">
+              Email
+            </label>
+          </div>
+          <div className="input-field">
+            <i className="material-icons prefix">lock</i>
+            <input
+              value="********"
+              disabled="disabled"
+              type="password"
+              id="password"
+            />
+            <label className="active" htmlFor="password">
+              Password
+            </label>
+          </div>
+          <div className="input-field">
+            <button to="/" className="btn pink lighten-1 z-depth-0"              onClick={() =>
                 this.handleSubmit(
-                    this.state.firstName,
-                    this.state.lastName,
                     this.state.phone
-                )}>
-              <NavLink to="/">Update Profile</NavLink>
+                )}> Update Profile 
             </button>
           </div>
-        </form>
       </div>
     );
   }
