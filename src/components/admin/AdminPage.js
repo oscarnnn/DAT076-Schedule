@@ -21,7 +21,7 @@ class AdminPage extends Component {
   }
 
   render() {
-    if (!this.props.profile.authority === 1 ) return <Redirect to="/signin" />;
+    if (this.props.profile.authority !== 1 ) return <Redirect to="/signin" />;
     return(
       <div>
         <div className="container col s12">

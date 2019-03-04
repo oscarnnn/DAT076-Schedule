@@ -18,6 +18,9 @@ const SignedInLinks = props => {
         <li>
           <NavLink to='/members'>Members</NavLink>
         </li>
+        <li>
+          <NavLink to='/profile'>Profile</NavLink>
+        </li>
         {links}
       </ul>
     </div>
