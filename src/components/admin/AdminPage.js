@@ -7,7 +7,14 @@ import { firestoreConnect } from "react-redux-firebase";
 
 class AdminPage extends Component {
   state = {
-    email: ""
+    email: "",
+    showMsg: false
+  }
+
+  componentWillMount() {
+    this.setState({
+      showMsg: false
+    })
   }
 
   handleChange = e => {
@@ -16,30 +23,45 @@ class AdminPage extends Component {
     });
   };
 
-  handleSubmit = (email,org) => {
-    this.props.checkValidEmail(email,org)
+  handleSubmit = (email, org) => {
+    this.props.checkValidEmail(email, org)
+    this.setState({
+      showMsg: true
+    })
   }
 
   render() {
-    if (this.props.profile.authority !== 1 ) return <Redirect to="/signin" />;
-    return(
+    let msg;
+    if (this.state.showMsg) {
+      msg = <div>
+        <div className="center green-text">
+          {this.props.adminMsg.successMsg ? <p>{this.props.adminMsg.successMsg}</p> : null}
+        </div>
+        <div className="center red-text">
+          {this.props.adminMsg.errorMsg ? <p>{this.props.adminMsg.errorMsg}</p> : null}
+        </div>
+      </div>
+    }
+    if (this.props.profile.authority !== 1) return <Redirect to="/signin" />;
+    return (
       <div>
         <div className="container col s12">
-            <h5 className="grey-text text-darken-3">Add Members to your organization</h5>
-            <div className="input-field">
-              <i className="material-icons prefix">email</i>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                onChange={this.handleChange}
-                required
-              />
-              <button
-                onClick={() => this.handleSubmit(this.state.email,this.props.profile.organization)}
-                className="btn blue lighten-1 z-depth-0"> Submit
+          <h5 className="grey-text text-darken-3">Add Members to your organization</h5>
+          <div className="input-field">
+            <i className="material-icons prefix">email</i>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              onChange={this.handleChange}
+              required
+            />
+            <button
+              onClick={() => this.handleSubmit(this.state.email, this.props.profile.organization)}
+              className="btn blue lighten-1 z-depth-0"> Submit
               </button>
-            </div>
+            {msg}
+          </div>
         </div>
       </div>
     )
@@ -52,7 +74,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     authError: state.auth.authError,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    adminMsg: state.admin
   };
 };
 

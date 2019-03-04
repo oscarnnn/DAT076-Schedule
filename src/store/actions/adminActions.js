@@ -15,7 +15,7 @@ export const isValidEmail = ( email, org ) => {
       );
     }).catch((err) => {
       dispatch({
-        type: "MEMBER_DOES_NOT_EXIST"
+        type: "MEMBER_DOES_NOT_EXIST", err
       })
     })
   }
