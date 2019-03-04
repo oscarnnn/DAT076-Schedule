@@ -292,7 +292,7 @@ const mapDispatchToProps = dispatch => {
 
 //Mapping the current states inside redux store and map it as props to schedule component
 const mapStateToProps = state => {
-  if (state.firestore.ordered.events) {
+  if (state.firebase.profile.organization && state.firestore.ordered.events) {
     return {
       events: state.firestore.ordered.events,
       auth: state.firebase.auth,
