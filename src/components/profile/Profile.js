@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
-import { NavLink } from "react-router-dom";
 import { updateUser } from "../../store/actions/userActions";
 
 class Profile extends Component {
@@ -17,13 +16,6 @@ class Profile extends Component {
       redirect : false
     };
 
-    this.input = React.createRef();
-  }
-  componentDidUpdate(prevProps) {
-    if (this.props.phone !== prevProps.phone) {
-      console.log("New Phone: " + this.props.phone);
-      console.log("Old Phone: " + prevProps.phone);
-    }
   }
 
   // When input text is changed in profile then this function will fire and update the state
@@ -86,7 +78,7 @@ class Profile extends Component {
             <input
               defaultValue={this.props.profile.phone}
               id="phone"
-              type="text"
+              type="tel"
               className="validate"
               onChange={this.handleChange}
             />
@@ -102,7 +94,7 @@ class Profile extends Component {
               type="text"
               disabled="disabled"
             />
-            <label className="active" htmlFor="phone">
+            <label className="active" htmlFor="organization">
               Organization
             </label>
           </div>
