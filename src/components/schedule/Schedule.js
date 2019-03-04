@@ -106,6 +106,8 @@ class Schedule extends Component {
     });
   };
 
+  // When editbutton is clicked inside editModal this function will fire and update the
+  // selected event with new data and save it on the db, then close the modal.
   handleSelectEvent = event => {
     this.setState({
       eventid: event.id,
@@ -117,13 +119,16 @@ class Schedule extends Component {
   };
 
   // When submitbutton is clicked in the modal this function will fire and update db and redux store
-  // with an event(start time, end time and title) and close modal
+  // with an event(start time, end time,title and organization) and close modal
   handleSubmit = (start, end, title) => {
+    const org = this.props.org;
     this.props.addEvent({
       start,
       end,
       title
-    });
+    },
+    org);
+    console.log(this.props.org)
     this.toggleAddModal();
   };
 
@@ -276,26 +281,28 @@ class Schedule extends Component {
   }
 }
 
+//Handles add,delete and update event. When called upon it will dispatch its actions
 const mapDispatchToProps = dispatch => {
   return {
-    addEvent: event => dispatch(addEvent(event)),
+    addEvent: (event, org) => dispatch(addEvent(event, org)),
     deleteEvent: eventid => dispatch(deleteEvent(eventid)),
     updateEvent: (event, eventid) => dispatch(updateEvent(event, eventid))
   };
 };
 
+//Mapping the current states inside redux store and map it as props to schedule component
 const mapStateToProps = state => {
-  if (state.firestore.ordered.organization) {
-    console.log(state)
+  if (state.firestore.ordered.events) {
     return {
-      events: [],
+      events: state.firestore.ordered.events,
       auth: state.firebase.auth,
       org: state.firebase.profile.organization
     };
   } else {
     return {
       events: [],
-      auth: state.firebase.auth
+      auth: state.firebase.auth,
+      org: ""
     };
   }
 };
@@ -305,9 +312,10 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([
+  firestoreConnect( props => [
     {
-      collection: 'organization',
+      collection: 'events',
+      where: [['organization', '==', props.org]]
     }
   ])
 )(Schedule);

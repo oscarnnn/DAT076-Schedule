@@ -1,4 +1,4 @@
-export const addEvent = event => {
+export const addEvent = (event,organization) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     firestore
@@ -6,7 +6,8 @@ export const addEvent = event => {
       .add({
         start: event.start,
         end: event.end,
-        title: event.title
+        title: event.title,
+        organization: organization
       })
       .then(() => {
         dispatch({ type: "ADD_EVENT", event });
