@@ -54,8 +54,10 @@ class SignUp extends Component {
               <input
                 type="text"
                 id="firstName"
+                pattern="[A-Za-zåäöÅÄÖ]{1,40}"
                 onChange={this.handleChange}
                 required
+                title="Allowed characters: A-Ö"
               />
             </div>
             <div className="input-field col s6">
@@ -63,8 +65,10 @@ class SignUp extends Component {
               <input
                 type="text"
                 id="lastName"
+                pattern="[A-Za-zåäöÅÄÖ]{1,40}"
                 onChange={this.handleChange}
                 required
+                title="Allowed characters: A-Ö"
               />
             </div>
           </div>
@@ -73,9 +77,11 @@ class SignUp extends Component {
             <label htmlFor="phone">Phone</label>
             <input
               type="tel"
+              pattern="[0-9,+]{5,15}"
               id="phone"
               onChange={this.handleChange}
               required
+              title="Allowed characters: 0-9,+. Minimum length: 5"
             />
           </div>
           <div className="input-field">
