@@ -4,6 +4,8 @@ import { signOut } from "../../store/actions/authActions";
 import { NavLink } from "react-router-dom";
 
 const SignedInLinks = props => {
+  const links = props.profile.authority === 1 ? <li> <NavLink to='/admin'>Admin Page</NavLink> </li> : <li/>;
+
   return (
     <div>
       <ul>
@@ -19,6 +21,7 @@ const SignedInLinks = props => {
         <li>
           <NavLink to='/profile'>Profile</NavLink>
         </li>
+        {links}
       </ul>
     </div>
   );

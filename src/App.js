@@ -5,6 +5,7 @@ import Schedule from "./components/schedule/Schedule";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Members from "./components/members/Members";
+import AdminPage from "./components/admin/AdminPage";
 import Profile from "./components/profile/Profile";
 import "./styles/App.css"
 
@@ -20,6 +21,7 @@ class App extends Component {
               <Route path="/signin" component={SignIn} />
               <Route path="/signup" component={SignUp} />
               <Route path="/members" component={Members} />
+              <Route path="/admin" component={AdminPage} />
               <Route path="/profile" component={Profile} />
             </Switch>
           </main>

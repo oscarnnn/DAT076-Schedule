@@ -28,7 +28,7 @@ class SignUp extends Component {
         <form className="white" onSubmit={this.handleSubmit}>
           <h5 className="grey-text text-darken-3">Sign Up</h5>
           <div className="input-field">
-            <i class="material-icons prefix">email</i>
+            <i className="material-icons prefix">email</i>
             <label htmlFor="email">Email</label>
             <input
               type="email"

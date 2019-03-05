@@ -37,6 +37,7 @@ export const signIn = (credentials) => {
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           phone: newUser.phone,
+          email: newUser.email,
           authority: 0,
           organization: "",
         });
