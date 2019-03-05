@@ -124,7 +124,7 @@ class Profile extends Component {
             </label>
           </div>
           <div className="input-field">
-            <button to="/" className="btn pink lighten-1 z-depth-0"              onClick={() =>
+            <button to="/" className="btn blue lighten-1 z-depth-0"              onClick={() =>
                 this.handleSubmit(
                     this.state.phone
                 )}> Update Profile 

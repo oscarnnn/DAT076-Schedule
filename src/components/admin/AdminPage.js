@@ -20,16 +20,6 @@ class AdminPage extends Component {
     }) 
   }
 
-  handleOrganization = (organization) => {
-    const userid = this.state.userid;
-    this.props.updateUser(
-      {
-        organization
-      },
-      userid
-    );
-  };
-
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
@@ -43,7 +33,6 @@ class AdminPage extends Component {
     })
   };
   
-
   handleSubmitOrg = (organization) => {
     const userid = this.state.userid;
     this.props.addOrganization(
@@ -56,6 +45,7 @@ class AdminPage extends Component {
 
   render() {
     let msg;
+    // Validation messages for adding members to your organization
     if (this.state.showMsg) {
       msg = <div>
         <div className="center green-text">
@@ -66,7 +56,10 @@ class AdminPage extends Component {
         </div>
       </div>
     }
+    // So that you can't access this view unless you're authorized to do so.
     if (this.props.profile.authority !== 1) return <Redirect to="/signin" />;
+
+    // If you're already a part of an organization then you can add members to it.
     if (this.props.profile.organization !== "")
     return (
       <div>
@@ -90,6 +83,7 @@ class AdminPage extends Component {
         </div>
       </div>
     )
+    // If you're not a part of an organization then you can create one.
     return(
       <div>
       <div className="container col s12">
