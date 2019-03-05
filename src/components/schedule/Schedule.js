@@ -159,9 +159,37 @@ class Schedule extends Component {
     const { auth, profile } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
     let select;
+    let adminButtons;
     if (profile.authority == 1 && profile.organization) {
       select = true;
-    } else select = false;
+      adminButtons = (
+        <>
+          <button
+            className="btn pink lighten-1 z-depth-0"
+            style={{ marginBottom: "10px" }}
+            onClick={() =>
+              this.handleEdit(
+                this.state.startDate,
+                this.state.endDate,
+                this.state.title
+              )
+            }
+          >
+            Edit
+          </button>
+          <button
+            className="btn pink lighten-1 z-depth-0"
+            style={{ marginBottom: "10px" }}
+            onClick={() => this.handleDelete(this.state.eventid)}
+          >
+            Delete
+          </button>
+        </>
+      );
+    } else {
+      select = false;
+      adminButtons = null;
+    }
     if (!profile.organization) {
       return (
         <div className="center red-text">
@@ -266,26 +294,7 @@ class Schedule extends Component {
                 style={{ width: "50%" }}
               />
               <br />
-              <button
-                className="btn pink lighten-1 z-depth-0"
-                style={{ marginBottom: "10px" }}
-                onClick={() =>
-                  this.handleEdit(
-                    this.state.startDate,
-                    this.state.endDate,
-                    this.state.title
-                  )
-                }
-              >
-                Edit
-              </button>
-              <button
-                className="btn pink lighten-1 z-depth-0"
-                style={{ marginBottom: "10px" }}
-                onClick={() => this.handleDelete(this.state.eventid)}
-              >
-                Delete
-              </button>
+              {adminButtons}
             </Modal>
           </div>
         </div>
