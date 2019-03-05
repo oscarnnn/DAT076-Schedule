@@ -20,6 +20,21 @@ const adminReducer = (state = initState, action) => {
           errorMsg: "Error: Couldn't add member to organization"
         }
 
+        case 'CREATE_ORGANIZATION':
+        return {
+          ...state,
+          successMsg: "Organization created",
+          errorMsg: null
+        }
+  
+        case 'CREATE_ORGANIZATION_ERROR':
+          console.log('create organization error: ', action.err);
+          return {
+            ...state,
+            successMsg: null,
+            errorMsg: "Error: Couldn't create organization"
+          }
+
       default:
         return state;
     }

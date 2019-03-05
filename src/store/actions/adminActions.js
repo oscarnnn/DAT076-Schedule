@@ -20,3 +20,20 @@ export const isValidEmail = ( email, org ) => {
     })
   }
 }
+
+export const addOrganization = (organization, userid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("users")
+      .doc(userid)
+      .update(organization)
+      .then(() => {
+        dispatch({ type: "ADD_ORGANIZATION", organization });
+      })
+      .catch(err => {
+        dispatch({ type: "ADD_ORGANIZATION_ERROR", err });
+      });
+  };
+};
+

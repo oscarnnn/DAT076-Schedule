@@ -43,7 +43,7 @@ class Profile extends Component {
       return <Redirect to='/'/>;
     }
     const { authError, auth } = this.props;
-    if (!auth.uid) return <Redirect to="/" />;
+    if (!auth.uid) return <Redirect to="/signin" />;
     return (
       <div className="container col s12">
   
