@@ -121,14 +121,15 @@ class Schedule extends Component {
   // When submitbutton is clicked in the modal this function will fire and update db and redux store
   // with an event(start time, end time,title and organization) and close modal
   handleSubmit = (start, end, title) => {
-    const org = this.props.org;
-    this.props.addEvent({
-      start,
-      end,
-      title
-    },
-    org);
-    console.log(this.props.org)
+    const org = this.props.profile.organization;
+    this.props.addEvent(
+      {
+        start,
+        end,
+        title
+      },
+      org
+    );
     this.toggleAddModal();
   };
 
@@ -155,129 +156,149 @@ class Schedule extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, profile } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
-    return (
-      <div style={{ width: "100%", height: "100%" }}>
-        <div className="schedule-container">
-          <BigCalendar
-            selectable
-            showMultiDayTimes
-            events={this.props.events}
-            localizer={localizer}
-            onSelectSlot={this.handleSelect}
-            onSelectEvent={event => this.handleSelectEvent(event)}
-          />
+    let select;
+    let adminButtons;
+    if (profile.authority == 1 && profile.organization) {
+      select = true;
+      adminButtons = (
+        <>
+          <button
+            className="btn pink lighten-1 z-depth-0"
+            style={{ marginBottom: "10px" }}
+            onClick={() =>
+              this.handleEdit(
+                this.state.startDate,
+                this.state.endDate,
+                this.state.title
+              )
+            }
+          >
+            Edit
+          </button>
+          <button
+            className="btn pink lighten-1 z-depth-0"
+            style={{ marginBottom: "10px" }}
+            onClick={() => this.handleDelete(this.state.eventid)}
+          >
+            Delete
+          </button>
+        </>
+      );
+    } else {
+      select = false;
+      adminButtons = null;
+    }
+    if (!profile.organization) {
+      return (
+        <div className="center red-text">
+          You need to be a member of an organization to view schedule!
         </div>
-        <div>
-          <Modal show={this.state.addShow} close={this.toggleAddModal}>
-            <h5>Add Event</h5>
-            <br />
-            <label>Title</label>
-            <input
-              style={{ width: "50%" }}
-              type="text"
-              value={this.state.title}
-              onChange={this.handleTitle}
+      );
+    } else
+      return (
+        <div style={{ width: "100%", height: "100%" }}>
+          <div className="schedule-container">
+            <BigCalendar
+              selectable={select}
+              showMultiDayTimes
+              events={this.props.events}
+              localizer={localizer}
+              onSelectSlot={this.handleSelect}
+              onSelectEvent={event => this.handleSelectEvent(event)}
             />
-            <br />
-            <label>Start time</label>
-            <DatePicker
-              selected={this.state.startDate}
-              onChange={this.updateStartDate}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy HH:mm"
-              timeCaption="time"
-              style={{ width: "50%" }}
-            />
-            <br />
-            <label>End time</label>
-            <DatePicker
-              selected={this.state.endDate}
-              onChange={this.updateEndDate}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy HH:mm"
-              timeCaption="time"
-              style={{ width: "50%" }}
-            />
-            <br />
-            <button
-              className="btn pink lighten-1 z-depth-0"
-              style={{ marginBottom: "10px" }}
-              onClick={() =>
-                this.handleSubmit(
-                  this.state.startDate,
-                  this.state.endDate,
-                  this.state.title
-                )
-              }
-            >
-              Submit
-            </button>
-          </Modal>
-          <Modal show={this.state.editShow} close={this.toggleEditModal}>
-            <h5>Edit Event</h5>
-            <br />
-            <label>Title</label>
-            <input
-              style={{ width: "50%" }}
-              type="text"
-              value={this.state.title}
-              onChange={this.handleTitle}
-            />
-            <br />
-            <label>Start time</label>
-            <DatePicker
-              selected={this.state.startDate}
-              onChange={this.updateStartDate}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy HH:mm"
-              timeCaption="time"
-              style={{ width: "50%" }}
-            />
-            <br />
-            <label>End time</label>
-            <DatePicker
-              selected={this.state.endDate}
-              onChange={this.updateEndDate}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy HH:mm"
-              timeCaption="time"
-              style={{ width: "50%" }}
-            />
-            <br />
-            <button
-              className="btn pink lighten-1 z-depth-0"
-              style={{ marginBottom: "10px" }}
-              onClick={() =>
-                this.handleEdit(
-                  this.state.startDate,
-                  this.state.endDate,
-                  this.state.title
-                )
-              }
-            >
-              Edit
-            </button>
-            <button
-              className="btn pink lighten-1 z-depth-0"
-              style={{ marginBottom: "10px" }}
-              onClick={() => this.handleDelete(this.state.eventid)}
-            >
-              Delete
-            </button>
-          </Modal>
+          </div>
+          <div>
+            <Modal show={this.state.addShow} close={this.toggleAddModal}>
+              <h5>Add Event</h5>
+              <br />
+              <label>Title</label>
+              <input
+                style={{ width: "50%" }}
+                type="text"
+                value={this.state.title}
+                onChange={this.handleTitle}
+              />
+              <br />
+              <label>Start time</label>
+              <DatePicker
+                selected={this.state.startDate}
+                onChange={this.updateStartDate}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                dateFormat="MMMM d, yyyy HH:mm"
+                timeCaption="time"
+                style={{ width: "50%" }}
+              />
+              <br />
+              <label>End time</label>
+              <DatePicker
+                selected={this.state.endDate}
+                onChange={this.updateEndDate}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                dateFormat="MMMM d, yyyy HH:mm"
+                timeCaption="time"
+                style={{ width: "50%" }}
+              />
+              <br />
+              <button
+                className="btn pink lighten-1 z-depth-0"
+                style={{ marginBottom: "10px" }}
+                onClick={() =>
+                  this.handleSubmit(
+                    this.state.startDate,
+                    this.state.endDate,
+                    this.state.title
+                  )
+                }
+              >
+                Submit
+              </button>
+            </Modal>
+            <Modal show={this.state.editShow} close={this.toggleEditModal}>
+              <h5>Edit Event</h5>
+              <br />
+              <label>Title</label>
+              <input
+                style={{ width: "50%" }}
+                type="text"
+                value={this.state.title}
+                onChange={this.handleTitle}
+              />
+              <br />
+              <label>Start time</label>
+              <DatePicker
+                selected={this.state.startDate}
+                onChange={this.updateStartDate}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                dateFormat="MMMM d, yyyy HH:mm"
+                timeCaption="time"
+                style={{ width: "50%" }}
+              />
+              <br />
+              <label>End time</label>
+              <DatePicker
+                selected={this.state.endDate}
+                onChange={this.updateEndDate}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                dateFormat="MMMM d, yyyy HH:mm"
+                timeCaption="time"
+                style={{ width: "50%" }}
+              />
+              <br />
+              {adminButtons}
+            </Modal>
+          </div>
         </div>
-      </div>
-    );
+      );
   }
 }
 
@@ -292,19 +313,13 @@ const mapDispatchToProps = dispatch => {
 
 //Mapping the current states inside redux store and map it as props to schedule component
 const mapStateToProps = state => {
-  if (state.firebase.profile.organization && state.firestore.ordered.events) {
-    return {
-      events: state.firestore.ordered.events,
-      auth: state.firebase.auth,
-      org: state.firebase.profile.organization
-    };
-  } else {
-    return {
-      events: [],
-      auth: state.firebase.auth,
-      org: ""
-    };
-  }
+  return {
+    events: state.firestore.ordered.events
+      ? state.firestore.ordered.events
+      : [],
+    auth: state.firebase.auth ? state.firebase.auth : {},
+    profile: state.firebase.profile ? state.firebase.profile : {}
+  };
 };
 
 export default compose(
@@ -312,10 +327,16 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect( props => [
+  firestoreConnect(props => [
     {
-      collection: 'events',
-      where: [['organization', '==', props.org]]
+      collection: "events",
+      where: [
+        [
+          "organization",
+          "==",
+          props.profile.organization ? props.profile.organization : ""
+        ]
+      ]
     }
   ])
 )(Schedule);
