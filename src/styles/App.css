@@ -5,6 +5,10 @@ html, body, #fullheight {
   min-width: 100%;
 }
 
+.hide-scroll-container {
+  overflow-y:hidden
+}
+
 main {
   padding-left: 300px;
   min-height: 40em;

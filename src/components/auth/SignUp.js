@@ -24,73 +24,75 @@ class SignUp extends Component {
     const { auth, authError } = this.props;
     if (auth.uid) return <Redirect to="/" />;
     return (
-      <div className="container col s12">
-        <form className="white" onSubmit={this.handleSubmit}>
-          <h5 className="grey-text text-darken-3">Sign Up</h5>
-          <div className="input-field">
-            <i className="material-icons prefix">email</i>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              onChange={this.handleChange}
-              required
-            />
-          </div>
-          <div className="input-field">
-            <i className="material-icons prefix">lock</i>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              onChange={this.handleChange}
-              required
-            />
-          </div>
-          <div className="row">
-            <div className="input-field col s6">
-              <i className="material-icons prefix">person</i>
-              <label htmlFor="firstName">First Name</label>
+      <div className="hide-scroll-container">
+        <div className="container col s12">
+          <form className="white" onSubmit={this.handleSubmit}>
+            <h5 className="grey-text text-darken-3">Sign Up</h5>
+            <div className="input-field">
+              <i className="material-icons prefix">email</i>
+              <label htmlFor="email">Email</label>
               <input
-                type="text"
-                id="firstName"
-                pattern="[A-Za-zåäöÅÄÖ]{1,40}"
+                type="email"
+                id="email"
                 onChange={this.handleChange}
                 required
-                title="Allowed characters: A-Ö"
               />
             </div>
-            <div className="input-field col s6">
-              <label htmlFor="lastName">Last Name</label>
+            <div className="input-field">
+              <i className="material-icons prefix">lock</i>
+              <label htmlFor="password">Password</label>
               <input
-                type="text"
-                id="lastName"
-                pattern="[A-Za-zåäöÅÄÖ]{1,40}"
+                type="password"
+                id="password"
                 onChange={this.handleChange}
                 required
-                title="Allowed characters: A-Ö"
               />
             </div>
-          </div>
-          <div className="input-field">
-            <i className="material-icons prefix">phone</i>
-            <label htmlFor="phone">Phone</label>
-            <input
-              type="tel"
-              pattern="[0-9,+]{5,15}"
-              id="phone"
-              onChange={this.handleChange}
-              required
-              title="Allowed characters: 0-9,+. Minimum length: 5"
-            />
-          </div>
-          <div className="input-field">
-            <button className="btn blue lighten-1 z-depth-0">Sign Up</button>
-            <div className="center red-text">
-              {authError ? <p>{authError}</p> : null}
+            <div className="row">
+              <div className="input-field col s6">
+                <i className="material-icons prefix">person</i>
+                <label htmlFor="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  pattern="[A-Za-zåäöÅÄÖ]{1,40}"
+                  onChange={this.handleChange}
+                  required
+                  title="Allowed characters: A-Ö"
+                />
+              </div>
+              <div className="input-field col s6">
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  pattern="[A-Za-zåäöÅÄÖ]{1,40}"
+                  onChange={this.handleChange}
+                  required
+                  title="Allowed characters: A-Ö"
+                />
+              </div>
             </div>
-          </div>
-        </form>
+            <div className="input-field">
+              <i className="material-icons prefix">phone</i>
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="tel"
+                pattern="[0-9,+]{5,15}"
+                id="phone"
+                onChange={this.handleChange}
+                required
+                title="Allowed characters: 0-9,+. Minimum length: 5"
+              />
+            </div>
+            <div className="input-field">
+              <button className="btn blue lighten-1 z-depth-0">Sign Up</button>
+              <div className="center red-text">
+                {authError ? <p>{authError}</p> : null}
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
