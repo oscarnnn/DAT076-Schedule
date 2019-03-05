@@ -41,7 +41,7 @@ class Profile extends Component {
       return <Redirect to="/" />;
     }
     const { authError, auth } = this.props;
-    if (!auth.uid) return <Redirect to="/" />;
+    if (!auth.uid) return <Redirect to="/signin" />;
     return (
       <div className="container col s12">
         <form
@@ -126,7 +126,8 @@ class Profile extends Component {
             </label>
           </div>
           <div className="input-field">
-            <button to="/" className="btn pink lighten-1 z-depth-0">
+
+            <button to="/" className="btn blue lighten-1 z-depth-0">
               {" "}
               Update Profile
             </button>
