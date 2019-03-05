@@ -41,7 +41,7 @@ class Members extends Component {
 }
 
 const mapStateToProps = state => {
-  if (state.firestore.ordered.users) {
+  if (state.firestore.ordered.users && state.firebase.profile.organization) {
     return {
       users: state.firestore.ordered.users,
       auth: state.firebase.auth,
