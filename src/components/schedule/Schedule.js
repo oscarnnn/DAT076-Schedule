@@ -155,13 +155,25 @@ class Schedule extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, profile } = this.props
     if (!auth.uid) return <Redirect to="/signin" />;
+    let select;
+    if (profile.authority == 1 && profile.organization){
+      select=true;
+    }
+    else select=false;
+    if (!profile.organization){
+      return(
+      <div className="center red-text">
+          You need to be a member of an organization to view schedule!
+      </div>)
+    }
+    else
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <div className="schedule-container">
           <BigCalendar
-            selectable
+            selectable={select}
             showMultiDayTimes
             events={this.props.events}
             localizer={localizer}
@@ -292,19 +304,11 @@ const mapDispatchToProps = dispatch => {
 
 //Mapping the current states inside redux store and map it as props to schedule component
 const mapStateToProps = state => {
-  if (state.firebase.profile.organization && state.firestore.ordered.events) {
     return {
-      events: state.firestore.ordered.events,
-      auth: state.firebase.auth,
-      org: state.firebase.profile.organization
-    };
-  } else {
-    return {
-      events: [],
-      auth: state.firebase.auth,
-      org: ""
-    };
-  }
+      events: state.firestore.ordered.events ? state.firestore.ordered.events : [],
+      auth: state.firebase.auth ? state.firebase.auth : {},
+      profile: state.firebase.profile ? state.firebase.profile : {}
+    }
 };
 
 export default compose(
@@ -315,7 +319,7 @@ export default compose(
   firestoreConnect( props => [
     {
       collection: 'events',
-      where: [['organization', '==', props.org]]
+      where: [['organization', '==', (props.profile.organization ? props.profile.organization : "")]]
     }
   ])
 )(Schedule);
