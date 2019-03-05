@@ -13,9 +13,8 @@ class Profile extends Component {
       lastName: "",
       phone: "",
       userid: this.props.auth.uid,
-      redirect : false
+      redirect: false
     };
-
   }
 
   // When input text is changed in profile then this function will fire and update the state
@@ -26,9 +25,9 @@ class Profile extends Component {
   };
   // When Update Profile button is clicked then this function will fire and update the event
   // connected to the current userid on db and redux store.
-  handleSubmit = (phone) => {
+  handleSubmit = phone => {
     const userid = this.state.userid;
-    this.setState({redirect: true});
+    this.setState({ redirect: true });
     this.props.updateUser(
       {
         phone
@@ -37,16 +36,18 @@ class Profile extends Component {
     );
   };
 
-  
   render() {
     if (this.state.redirect) {
-      return <Redirect to='/'/>;
+      return <Redirect to="/" />;
     }
     const { authError, auth } = this.props;
     if (!auth.uid) return <Redirect to="/" />;
     return (
       <div className="container col s12">
-  
+        <form
+          className="white"
+          onSubmit={() => this.handleSubmit(this.state.phone)}
+        >
           <h5 className="grey-text text-darken-3">Profile information</h5>
           <div className="row">
             <div className="input-field col s6">
@@ -79,8 +80,9 @@ class Profile extends Component {
               defaultValue={this.props.profile.phone}
               id="phone"
               type="tel"
-              className="validate"
               onChange={this.handleChange}
+              pattern="[0-9,+]{5,15}"
+              title="Allowed characters: 0-9,+. Minimum length: 5"
             />
             <label className="active" htmlFor="phone">
               Phone
@@ -124,12 +126,12 @@ class Profile extends Component {
             </label>
           </div>
           <div className="input-field">
-            <button to="/" className="btn pink lighten-1 z-depth-0"              onClick={() =>
-                this.handleSubmit(
-                    this.state.phone
-                )}> Update Profile 
+            <button to="/" className="btn pink lighten-1 z-depth-0">
+              {" "}
+              Update Profile
             </button>
           </div>
+        </form>
       </div>
     );
   }
@@ -143,16 +145,15 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-      updateUser: (user, userid) => dispatch(updateUser(user, userid))
-    };
+  return {
+    updateUser: (user, userid) => dispatch(updateUser(user, userid))
   };
+};
 
-  export default compose(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    ),
-    firestoreConnect([{ collection: "users" }])
-  )(Profile);
-  
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect([{ collection: "users" }])
+)(Profile);
