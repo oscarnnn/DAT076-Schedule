@@ -1,4 +1,4 @@
-export const addEvent = (event,organization) => {
+export const addEvent = (event, organization) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     firestore
@@ -46,6 +46,44 @@ export const updateEvent = (event, eventid) => {
       })
       .catch(err => {
         dispatch({ type: "UPDATE_EVENT_ERROR", err });
+      });
+  };
+};
+
+export const addParticipant = (uid, name, eventid) => {
+  let mapkey = "participants." + uid
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("events")
+      .doc(eventid)
+      .update({
+        [mapkey]: name
+      })
+      .then(() => {
+        dispatch({ type: "ADD_PARTICIPANT", uid });
+      })
+      .catch(err => {
+        dispatch({ type: "ADD_PARTICIPANT_ERROR", err });
+      });
+  };
+};
+
+export const removeParticipant = (uid, eventid) => {
+  let mapkey = "participants." + uid
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("events")
+      .doc(eventid)
+      .update({
+        [mapkey]: firestore.FieldValue.delete()
+      })
+      .then(() => {
+        dispatch({ type: "REMOVE_PARTICIPANT", uid });
+      })
+      .catch(err => {
+        dispatch({ type: "REMOVE_PARTICIPANT_ERROR", err });
       });
   };
 };

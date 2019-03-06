@@ -10,12 +10,15 @@ import DatePicker from "react-datepicker";
 import {
   addEvent,
   deleteEvent,
-  updateEvent
+  updateEvent,
+  addParticipant,
+  removeParticipant
 } from "../../store/actions/eventActions";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../styles/modal.css";
 import "../../styles/schedule.css";
+import Participate from "./Participate";
 
 // This component will render and handle the schedule. It will get events from the
 // firestore database and also add events to the database while also saving the events in
@@ -34,13 +37,19 @@ class Schedule extends Component {
       eventid: "",
       startDate: new Date(),
       endDate: new Date(),
-      title: ""
+      title: "",
+      participants: []
     };
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.events !== prevProps.events) {
       this.formatDates();
+      //If there are events in the schedule and an event has been selected, update the participants for that event
+      //when props or state in schedule updates
+      if (this.props.events && this.state.eventid && this.state.eventid != "") {
+        this.updateParticipants();
+      }
     }
   }
 
@@ -113,7 +122,8 @@ class Schedule extends Component {
       eventid: event.id,
       startDate: event.start,
       endDate: event.end,
-      title: event.title
+      title: event.title,
+      participants: event.participants
     });
     this.toggleEditModal();
   };
@@ -153,6 +163,32 @@ class Schedule extends Component {
       id
     );
     this.toggleEditModal();
+  };
+
+  //Updates the state of participants to the participants of the selected event from firestore
+  updateParticipants = () => {
+    //Find the selected event from the events in the schedule
+    let filtered = this.props.events.filter(e => {
+      return e.id == this.state.eventid;
+    });
+    //Set the state of participants to the participants of the selected event
+    this.setState({ participants: filtered[0].participants });
+  };
+
+  //Dispatches the addParticipant(uid, name, eventid) action.
+  //Used when the "PARTICIPATE" button is pressed
+  handleAddParticipant = () => {
+    this.props.addParticipant(
+      this.props.auth.uid,
+      this.props.profile.firstName + " " + this.props.profile.lastName,
+      this.state.eventid
+    );
+  };
+
+  //Dispatches the removeParticipant(uid, eventid) action.
+  //Used when the "LEAVE" button is pressed
+  handleRemoveParticipant = () => {
+    this.props.removeParticipant(this.props.auth.uid, this.state.eventid);
   };
 
   render() {
@@ -294,6 +330,14 @@ class Schedule extends Component {
                 style={{ width: "50%" }}
               />
               <br />
+              {/*Component to show the participants of the selected event and a button to participate or leave*/}
+              <Participate
+                participants={this.state.participants}
+                uid={this.props.auth.uid}
+                onParticipate={this.handleAddParticipant}
+                onLeave={this.handleRemoveParticipant}
+              />
+              <br />
               {adminButtons}
             </Modal>
           </div>
@@ -307,7 +351,11 @@ const mapDispatchToProps = dispatch => {
   return {
     addEvent: (event, org) => dispatch(addEvent(event, org)),
     deleteEvent: eventid => dispatch(deleteEvent(eventid)),
-    updateEvent: (event, eventid) => dispatch(updateEvent(event, eventid))
+    updateEvent: (event, eventid) => dispatch(updateEvent(event, eventid)),
+    addParticipant: (uid, name, eventid) =>
+      dispatch(addParticipant(uid, name, eventid)),
+    removeParticipant: (uid, eventid) =>
+      dispatch(removeParticipant(uid, eventid))
   };
 };
 
