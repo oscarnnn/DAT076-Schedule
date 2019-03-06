@@ -21,26 +21,38 @@ class SignIn extends Component {
     const { authError, auth } = this.props;
     if (auth.uid) return <Redirect to="/" />;
     return (
-      <div className="container">
-        <form className="white" onSubmit={this.handleSubmit}>
-          <h5 className="grey-text text-darken-3">Log In</h5>
-          <div className="input-field">
-            <i className="material-icons prefix">email</i>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} required/>
-          </div>
-          <div className="input-field">
-            <i className="material-icons prefix">lock</i>
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} required/>
-          </div>
-          <div className="input-field">
-            <button className="btn blue lighten-1 z-depth-0">Log In</button>
-            <div className="center red-text">
-              {authError ? <p>{authError}</p> : null}
+      <div className="hide-scroll-container">
+        <div className="container">
+          <form className="white" onSubmit={this.handleSubmit}>
+            <h5 className="grey-text text-darken-3">Log In</h5>
+            <div className="input-field">
+              <i className="material-icons prefix">email</i>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                onChange={this.handleChange}
+                required
+              />
             </div>
-          </div>
-        </form>
+            <div className="input-field">
+              <i className="material-icons prefix">lock</i>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+            <div className="input-field">
+              <button className="btn blue lighten-1 z-depth-0">Log In</button>
+              <div className="center red-text">
+                {authError ? <p>{authError}</p> : null}
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
