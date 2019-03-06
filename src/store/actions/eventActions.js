@@ -1,3 +1,5 @@
+//This actioncreator will add an a new event to the collection "events" on the database.
+//If successful it will dispatch an "ADD_EVENT" action, else "ADD_EVENT_ERROR"
 export const addEvent = (event, organization) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
@@ -18,6 +20,8 @@ export const addEvent = (event, organization) => {
   };
 };
 
+//This actioncreator will delete an event connected to the "eventid" from the collection "events" in the database.
+//If successful it will dispatch an "DEL_EVENT" action, else "DEL_EVENT_ERROR"
 export const deleteEvent = eventid => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
@@ -34,6 +38,8 @@ export const deleteEvent = eventid => {
   };
 };
 
+//This actioncreator will update the event in the database that has the id of "eventid" with the new event given as 
+//the parameter "event"
 export const updateEvent = (event, eventid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
