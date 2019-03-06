@@ -1,49 +1,49 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
 
+//Component that will render the participants for a selected event in the schedule and a button to participate or leave
 class Participate extends Component {
-  constructor() {
-    super();
+  //onClick for the "LEAVE" button
+  participate = () => {
+    this.props.onParticipate();
+  };
 
-    this.state = {
-      children: [],
-      eventid: ""
-    };
-  }
-
-  componentWillMount() {
-    this.setState({
-      eventid: this.props.eventid
-    });
-  }
-
-  appendChild = () => {
-    this.setState({
-      children: [
-        ...this.state.children,
-        <div key={this.props.uid} className="chip">
-          {this.props.profile.firstName + " " + this.props.profile.lastName}
-        </div>
-      ]
-    });
+  //onClick for the "PARTICIPATE" button
+  leave = () => {
+    this.props.onLeave();
   };
 
   render() {
     return (
       <div>
-        {this.state.children}
+        <div className="center-align">
+          {/*Map the participants from the state in schedule*/}
+          {this.props.participants &&
+            Object.entries(this.props.participants).map(([key, value]) => (
+              <div key={key} className="chip">
+                {value}
+              </div>
+            ))}
+        </div>
         <br />
         <div className="center-align">
-          <button
-            className="btn pink lighten-1 z-depth-0"
-            onClick={() => {
-              this.appendChild();
-            }}
-          >
-            Participate
-          </button>
+          {/*If the current user is already participating in an event, show the "LEAVE" button
+              otherwise show the "PARTICIPATE" button */}
+          {this.props.participants &&
+          Object.keys(this.props.participants).includes(this.props.uid) ? (
+            <button
+              className="btn blue lighten-1 z-depth-0"
+              onClick={this.leave}
+            >
+              Leave
+            </button>
+          ) : (
+            <button
+              className="btn blue lighten-1 z-depth-0"
+              onClick={this.participate}
+            >
+              Participate
+            </button>
+          )}
         </div>
       </div>
     );
