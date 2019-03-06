@@ -8,6 +8,10 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
+//This component will render a page only for admins. There will be a input field to create an
+//organization if the admin doesn't have one and an input field to add members to the admins
+//organization
+
 class AdminPage extends Component {
   state = {
     email: "",
@@ -23,12 +27,16 @@ class AdminPage extends Component {
     });
   }
 
+  //Updates the state of the input fields
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
   };
 
+  //Handles the submitted values from the input field "email", 
+  //it will dispatch the action "isValidEmail" and add
+  //the email to the current admins organization
   handleSubmitUser = (email, org) => {
     this.props.checkValidEmail(email, org);
     this.setState({
@@ -36,6 +44,9 @@ class AdminPage extends Component {
     });
   };
 
+  //Handles the submitted values from the input field "organization", 
+  //it will call the action "addOrganization"
+  //and add the current admin to the organization
   handleSubmitOrg = organization => {
     const userid = this.state.userid;
     this.props.addOrganization(
@@ -132,6 +143,7 @@ class AdminPage extends Component {
   }
 }
 
+//This function will map the chosen states from the redux store to this components props
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
@@ -141,6 +153,7 @@ const mapStateToProps = state => {
   };
 };
 
+//This function will dispatch the chosen actions to update db and redux store
 const mapDispatchToProps = dispatch => {
   return {
     checkValidEmail: (email, org) => dispatch(isValidEmail(email, org)),
@@ -149,6 +162,8 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+//This function will connect the component with firestore and grab the collection "users" and also connect the
+//component to the redux store
 export default compose(
   connect(
     mapStateToProps,

@@ -3,6 +3,9 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { signUp } from "../../store/actions/authActions";
 
+//This component handles the sign up. It will render a page with a sign up form. After the user
+//has successfully filled in the form, he/she will be redirected to the schedule page
+
 class SignUp extends Component {
   state = {
     email: "",
@@ -11,11 +14,15 @@ class SignUp extends Component {
     lastName: "",
     phone: ""
   };
+    //Updates the states with the values from the input fields "email", "password", "firstname", "lastname"
+    //and "phone"
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
   };
+
+  //This function will fire when user submit the input fields and dispatch the action "signUp" with the current state
   handleSubmit = e => {
     e.preventDefault();
     this.props.signUp(this.state);
@@ -98,6 +105,7 @@ class SignUp extends Component {
   }
 }
 
+//This function will map the chosen states from the redux store to this components props
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
@@ -105,12 +113,14 @@ const mapStateToProps = state => {
   };
 };
 
+//This function handles dispatches of the chosen actions to update db and redux store
 const mapDispatchToProps = dispatch => {
   return {
     signUp: creds => dispatch(signUp(creds))
   };
 };
 
+//This function connects this component to the redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

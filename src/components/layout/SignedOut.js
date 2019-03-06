@@ -1,6 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
+//This component will handle which links in the navbar that should be visible when the user is logged out
+
 const SignedOutLinks = () => {
   return (
     <div>
