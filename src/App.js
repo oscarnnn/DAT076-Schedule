@@ -7,7 +7,7 @@ import SignUp from "./components/auth/SignUp";
 import Members from "./components/members/Members";
 import AdminPage from "./components/admin/AdminPage";
 import Profile from "./components/profile/Profile";
-import "./styles/App.css"
+import "./styles/app.css"
 
 class App extends Component {
   render() {

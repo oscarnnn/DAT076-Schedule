@@ -5,29 +5,25 @@ import SignedIn from "../layout/SignedIn";
 import SignedOut from "../layout/SignedOut";
 import Logo from "../../assets/Logo.svg";
 import M from "materialize-css/dist/js/materialize.min.js";
-
-const logoStyle = {
-  width:"50%",
-  marginLeft: "2em",
-  marginTop: "1em",
-};
+import "../../styles/sidenavbar.css";
 
 class SideNavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSmallScreen: false    
+      isSmallScreen: false
     };
-
     this.updateScreenWidth = this.updateScreenWidth.bind(this);
   }
 
   componentDidMount() {
     this.updateScreenWidth();
+    //Update screen width when resizing window
     window.addEventListener("resize", this.updateScreenWidth);
 
+    //Initialize sidenav 
     var elem = document.querySelector(".sidenav");
-      M.Sidenav.init(elem, {
+    M.Sidenav.init(elem, {
       edge: "left",
       inDuration: 250
     });
@@ -43,22 +39,29 @@ class SideNavBar extends Component {
 
   render() {
     const { auth, profile } = this.props;
+    //Show SignedIn links if signed in and SignedOut if not
     const links = auth.uid ? <SignedIn profile={profile} /> : <SignedOut />;
     const isSmallScreen = this.state.isSmallScreen;
     return (
       <div>
+        {/*The classes are from materializecss and creates the sidenav*/}
         <ul
           id="slide-out"
           className="sidenav sidenav-fixed light-blue lighten-5"
         >
           <Link to="/">
-            <img src={Logo} style={logoStyle} alt="logo" />
+            <div>
+              <img src={Logo} class="logo" alt="logo" />
+            </div>
           </Link>
           {links}
         </ul>
-        {isSmallScreen && <a href="#" data-target="slide-out" className="sidenav-trigger">
-          <i className="medium material-icons">menu</i>
-        </a>}
+        {/*Shows the burger menu button if the inner width of the screen is less than 992 pixels*/}
+        {isSmallScreen && (
+          <a href="#" data-target="slide-out" className="sidenav-trigger">
+            <i className="medium material-icons">menu</i>
+          </a>
+        )}
       </div>
     );
   }

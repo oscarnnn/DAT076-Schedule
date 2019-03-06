@@ -50,14 +50,17 @@ export const updateEvent = (event, eventid) => {
   };
 };
 
+//Adds a participant to an event
 export const addParticipant = (uid, name, eventid) => {
-  let mapkey = "participants." + uid
+  //mapkey is to set a specific key
+  let mapkey = "participants." + uid;
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     firestore
       .collection("events")
       .doc(eventid)
       .update({
+        //set the value of the key(uid) in the participants map to the name parameter 
         [mapkey]: name
       })
       .then(() => {
@@ -69,14 +72,16 @@ export const addParticipant = (uid, name, eventid) => {
   };
 };
 
+//Remove a participant from an event
 export const removeParticipant = (uid, eventid) => {
-  let mapkey = "participants." + uid
+  let mapkey = "participants." + uid;
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     firestore
       .collection("events")
       .doc(eventid)
       .update({
+        //Delete the key(uid)-value(name) pair in the participants map
         [mapkey]: firestore.FieldValue.delete()
       })
       .then(() => {
