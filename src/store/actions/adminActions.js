@@ -1,5 +1,6 @@
-//This actioncreator will first try to add the given email to the given organization in the database,
-//if it was succeeded the function will dispatch another action with typ "VALID_MEMBER".
+//This actioncreator will first try to add the user which is the owner of the "email"
+//to the organization "org".
+//If it was successful the function will dispatch an action with type "VALID_MEMBER".
 //If the email wasn't found in the database a action with typ "MEMBER_DOES_NOT_EXIST" will be dispatched
 export const isValidEmail = ( email, org ) => {
   return (dispatch, getState, {getFirebase, getFirestore}) => {
