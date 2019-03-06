@@ -202,7 +202,7 @@ class Schedule extends Component {
       adminButtons = (
         <>
           <button
-            className="btn pink lighten-1 z-depth-0"
+            className="btn blue lighten-1 z-depth-0"
             style={{ marginBottom: "10px" }}
             onClick={() =>
               this.handleEdit(
@@ -215,7 +215,7 @@ class Schedule extends Component {
             Edit
           </button>
           <button
-            className="btn pink lighten-1 z-depth-0"
+            className="btn blue lighten-1 z-depth-0"
             style={{ marginBottom: "10px" }}
             onClick={() => this.handleDelete(this.state.eventid)}
           >
@@ -283,7 +283,7 @@ class Schedule extends Component {
               />
               <br />
               <button
-                className="btn pink lighten-1 z-depth-0"
+                className="btn blue lighten-1 z-depth-0"
                 style={{ marginBottom: "10px" }}
                 onClick={() =>
                   this.handleSubmit(

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import SignedIn from "../layout/SignedIn";
 import SignedOut from "../layout/SignedOut";
-import Logo from "../../assets/Logo.svg";
 import M from "materialize-css/dist/js/materialize.min.js";
 import "../../styles/sidenavbar.css";
 
@@ -34,7 +33,7 @@ class SideNavBar extends Component {
   }
 
   updateScreenWidth() {
-    this.setState({ isSmallScreen: window.innerWidth < 992 });
+    this.setState({ isSmallScreen: window.innerWidth <= 992 });
   }
 
   render() {
@@ -51,12 +50,12 @@ class SideNavBar extends Component {
         >
           <Link to="/">
             <div>
-              <img src={Logo} class="logo" alt="logo" />
+              <img src={"/Logo.svg"} className="logo" alt="logo" />
             </div>
           </Link>
           {links}
         </ul>
-        {/*Shows the burger menu button if the inner width of the screen is less than 992 pixels*/}
+        {/*Shows the burger menu button if the inner width of the screen is less or equal to 992 pixels*/}
         {isSmallScreen && (
           <a href="#" data-target="slide-out" className="sidenav-trigger">
             <i className="medium material-icons">menu</i>
