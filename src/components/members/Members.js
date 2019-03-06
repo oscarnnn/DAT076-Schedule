@@ -4,6 +4,8 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { Redirect } from "react-router-dom";
 
+//This component will render a page with a table to show all the members in the current users organization
+
 class Members extends Component {
   render() {
     let display = this.props.users;
@@ -40,28 +42,25 @@ class Members extends Component {
   }
 }
 
+//This function will map the chosen states from the redux store to this components props
 const mapStateToProps = state => {
-  if (state.firestore.ordered.users && state.firebase.profile.organization) {
-    return {
-      users: state.firestore.ordered.users,
-      auth: state.firebase.auth,
-      org: state.firebase.profile.organization
-    };
-  } else {
-    return {
-      users: [],
-      auth: state.firebase.auth,
-      org: ""
-    };
-  }
+  return {
+    users: state.firestore.ordered.users ? state.firestore.ordered.users : [],
+    auth: state.firebase.auth ? state.firebase.auth : {},
+    org: state.firebase.profile.organization
+      ? state.firebase.profile.organization
+      : ""
+  };
 };
 
+//This function will connect the component with firestore and grab the collection "users" where
+//the organization is the same as the current users and also connect the component to the redux store
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect( props => [
+  firestoreConnect(props => [
     {
-       collection: 'users' ,
-       where: [['organization', '==', props.org]]
+      collection: "users",
+      where: [["organization", "==", props.org]]
     }
   ])
 )(Members);

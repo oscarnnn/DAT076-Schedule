@@ -5,6 +5,9 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { updateUser } from "../../store/actions/userActions";
 
+//This component will render a page with all information about the current user. And a input field
+//with the users phonenumber which is editable.
+
 class Profile extends Component {
   constructor(...args) {
     super(...args);
@@ -23,6 +26,7 @@ class Profile extends Component {
       [e.target.id]: e.target.value
     });
   };
+
   // When Update Profile button is clicked then this function will fire and update the event
   // connected to the current userid on db and redux store.
   handleSubmit = phone => {
@@ -139,6 +143,7 @@ class Profile extends Component {
   }
 }
 
+//This function will dispatch the chosen actions to update db and redux store
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
@@ -146,16 +151,19 @@ const mapStateToProps = state => {
   };
 };
 
+//This function will dispatch the chosen actions to update db and redux store
 const mapDispatchToProps = dispatch => {
   return {
     updateUser: (user, userid) => dispatch(updateUser(user, userid))
   };
 };
 
+//This function will connect the component with firestore and grab the collection "users" and also connect the
+//component to the redux store
 export default compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([{ collection: "users" }])
+  firestoreConnect()
 )(Profile);

@@ -3,16 +3,24 @@ import { connect } from "react-redux";
 import { signIn } from "../../store/actions/authActions";
 import { Redirect } from "react-router-dom";
 
+//This component handles the sign in. It will render a page with sign in form 
+//After the user submitted email and password, they will be checked in the db 
+//and if they are valid the user will be redirected to the schedule-page
+
 class SignIn extends Component {
   state = {
     email: "",
     password: ""
   };
+
+  //Updates the states with the values from the input fields "email" and "password"
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
   };
+
+  //Fires the action "signIn" with the current state when user submits the input fields
   handleSubmit = e => {
     e.preventDefault();
     this.props.signIn(this.state);
@@ -58,6 +66,7 @@ class SignIn extends Component {
   }
 }
 
+//This function will map the chosen states from the redux store to this components props
 const mapStateToProps = state => {
   return {
     authError: state.auth.authError,
@@ -65,12 +74,14 @@ const mapStateToProps = state => {
   };
 };
 
+//This function handles dispatches of the chosen actions to update db and redux store
 const mapDispatchToProps = dispatch => {
   return {
     signIn: creds => dispatch(signIn(creds))
   };
 };
 
+//This function connects this component to the redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps
