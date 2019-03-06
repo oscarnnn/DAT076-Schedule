@@ -44,7 +44,7 @@ class Profile extends Component {
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
-    const { authError, auth } = this.props;
+    const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
     return (
       <div className="hide-scroll-container">
