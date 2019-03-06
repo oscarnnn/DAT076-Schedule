@@ -24,7 +24,7 @@ import Participate from "./Participate";
 // firestore database and also add events to the database while also saving the events in
 // redux store.
 
-// Setup the localizer by providing the moment (or globalize) Object
+// Setup the localizer by providing the moment Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -47,13 +47,13 @@ class Schedule extends Component {
       this.formatDates();
       //If there are events in the schedule and an event has been selected, update the participants for that event
       //when props or state in schedule updates
-      if (this.props.events && this.state.eventid && this.state.eventid != "") {
+      if (this.props.events && this.state.eventid && this.state.eventid !== "") {
         this.updateParticipants();
       }
     }
   }
 
-  // Handling closing and opening of modal
+  //Handles closing and opening of addmodal
   toggleAddModal = e => {
     if (this.state.addShow)
       this.setState({
@@ -64,6 +64,7 @@ class Schedule extends Component {
     });
   };
 
+  //Handles closing and opening of editmodal
   toggleEditModal = e => {
     if (this.state.editShow)
       this.setState({
@@ -74,21 +75,21 @@ class Schedule extends Component {
     });
   };
 
-  // Updates startdate when a date is picked while adding an event
+  //Updates startdate when a date is picked while adding an event
   updateStartDate = date => {
     this.setState({
       startDate: date
     });
   };
 
-  // Updates enddate when a date is picked while adding an event
+  //Updates enddate when a date is picked while adding an event
   updateEndDate = date => {
     this.setState({
       endDate: date
     });
   };
-  // When a date is clicked or dragged on schedule this function will fire and update startdate and enddate
-  // with the chosen date/dates
+  //When a date is clicked or dragged on schedule this function will fire and update startdate and enddate
+  //with the chosen date/dates
   handleSelect = ({ start, end }) => {
     this.setState({
       startDate: start,
@@ -97,7 +98,7 @@ class Schedule extends Component {
     this.toggleAddModal();
   };
 
-  // Formats timestamps from the firebase server to valid dates
+  //Formats timestamps from the firebase server to valid dates
   formatDates = () => {
     let tmpList = this.props.events;
     for (let i = 0; i < tmpList.length; i++) {
@@ -108,15 +109,15 @@ class Schedule extends Component {
     }
   };
 
-  // Update the title for the event
+  //Update the title for the event
   handleTitle = title => {
     this.setState({
       title: title.target.value
     });
   };
 
-  // When editbutton is clicked inside editModal this function will fire and update the
-  // selected event with new data and save it on the db, then close the modal.
+  //When editbutton is clicked inside editModal this function will fire and update the
+  //selected event with new data and save it on the db, then close the modal.
   handleSelectEvent = event => {
     this.setState({
       eventid: event.id,
@@ -128,8 +129,8 @@ class Schedule extends Component {
     this.toggleEditModal();
   };
 
-  // When submitbutton is clicked in the modal this function will fire and update db and redux store
-  // with an event(start time, end time,title and organization) and close modal
+  //When submitbutton is clicked in the modal this function will fire and update db and redux store
+  //with an event(start time, end time,title and organization) and close modal
   handleSubmit = (start, end, title) => {
     const org = this.props.profile.organization;
     this.props.addEvent(
@@ -143,15 +144,15 @@ class Schedule extends Component {
     this.toggleAddModal();
   };
 
-  // When deletebutton is clicked in the modal this function will fire and delete the event
-  // connected with an id from both db and redux store and close modal
+  //When deletebutton is clicked in the modal this function will fire and delete the event
+  //connected with an id from both db and redux store and close modal
   handleDelete = eventid => {
     this.props.deleteEvent(eventid);
     this.toggleEditModal();
   };
 
-  // When editbutton is clicked in the modal this function will fire and update the event
-  // connected to the current eventid on db and redux store, then close modal
+  //When editbutton is clicked in the modal this function will fire and update the event
+  //connected to the current eventid on db and redux store, then close modal
   handleEdit = (start, end, title) => {
     const id = this.state.eventid;
     this.props.updateEvent(
@@ -169,7 +170,7 @@ class Schedule extends Component {
   updateParticipants = () => {
     //Find the selected event from the events in the schedule
     let filtered = this.props.events.filter(e => {
-      return e.id == this.state.eventid;
+      return e.id === this.state.eventid;
     });
     //Set the state of participants to the participants of the selected event
     this.setState({ participants: filtered[0].participants });
@@ -194,9 +195,9 @@ class Schedule extends Component {
   render() {
     const { auth, profile } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
-    let select;
-    let adminButtons;
-    if (profile.authority == 1 && profile.organization) {
+    let select; //This variable handles if the user should be able to create events
+    let adminButtons; //This variable handles if the adminbuttons should be visible or not
+    if (profile.authority === 1 && profile.organization) { //This condition will check if the current user is and admin and has an organization
       select = true;
       adminButtons = (
         <>
@@ -226,7 +227,7 @@ class Schedule extends Component {
       select = false;
       adminButtons = null;
     }
-    if (!profile.organization) {
+    if (!profile.organization) {//This condition will check if the current user has an organization, if not, the schedule wont render
       return (
         <div className="center red-text">
           You need to be a member of an organization to view schedule!
@@ -370,6 +371,8 @@ const mapStateToProps = state => {
   };
 };
 
+//This function will connect the component to the redux store and also connect the component to the firestore to listen
+//on the collection "events" where the field organization is matching the current users organization
 export default compose(
   connect(
     mapStateToProps,
