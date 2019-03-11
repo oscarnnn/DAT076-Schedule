@@ -36,7 +36,7 @@ To deploy on localhost:
     -   Click the "</>" button on the page
     -   Copy everything inside the curly brackets 
         (this information should not be made public and dev.js is therefore in the .gitignore)
-    -   Create a file "dev.js" in "Projectname"\src\config
+    -   Create a file "dev.js" in "PROJECT_NAME"\src\config
     -   In dev.js write:
         
             export const FirebaseConfig = { PASTE_HERE };
