@@ -5,7 +5,7 @@ Manual can be found in Report.pdf
 
 To deploy on localhost:
 
-    Requires npm (get from https://www.npmjs.com/get-npm)
+** Requires npm (get from https://www.npmjs.com/get-npm) **
 
 1. Clone this repo (git clone https://github.com/oscarnnn/DAT076-Schedule.git) to prefered location
 
