@@ -1,0 +1,16 @@
+User
+- Create an account
+- Log in
+- Log out
+- View schedule
+- Participate in events
+- Leave events
+- View a list of members in the organization the user belongs to
+- Edit user profile
+
+Admin
+- Create new events
+- Edit existing events
+- Delete existing events
+- Add members to your organization
+- Create an organization
