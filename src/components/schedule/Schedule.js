@@ -149,6 +149,9 @@ class Schedule extends Component {
   handleDelete = eventid => {
     this.props.deleteEvent(eventid);
     this.toggleEditModal();
+    this.setState({
+      eventid: null
+    })
   };
 
   //When editbutton is clicked in the modal this function will fire and update the event
